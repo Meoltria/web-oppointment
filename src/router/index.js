@@ -12,7 +12,12 @@ export default new Router({
     {
       path: '/home',
       component: resolve => require(['../views/home/Home.vue'], resolve),
-      children: []
+      children: [
+        {
+          path: '/DictionaryManager',
+          component: resolve => require(['../views/dictonary/Dictonary.vue'], resolve)
+        }
+      ]
     },
     {
       path: '/login',
