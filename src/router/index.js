@@ -16,6 +16,10 @@ export default new Router({
         {
           path: '/DictionaryManager',
           component: resolve => require(['../views/dictonary/Dictonary.vue'], resolve)
+        },
+        {
+          path: '/HospitalInfo',
+          component: resolve => require(['../views/hospital/Hospital.vue'], resolve)
         }
       ]
     },

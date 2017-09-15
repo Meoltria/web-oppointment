@@ -61,6 +61,13 @@ service.interceptors.response.use(response => {
            type: 'error'
          })
          break
+       case 422:
+         Message({
+           showClose: true,
+           message: error.response.data.errors,
+           type: 'error'
+         })
+         break
        case 500:
          Message({
            showClose: true,
