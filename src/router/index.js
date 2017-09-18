@@ -20,6 +20,10 @@ export default new Router({
         {
           path: '/HospitalInfo',
           component: resolve => require(['../views/hospital/Hospital.vue'], resolve)
+        },
+        {
+          path: '/OrgnazitionManager',
+          component: resolve => require(['../views/orgnazition/Orgnazition.vue'], resolve)
         }
       ]
     },

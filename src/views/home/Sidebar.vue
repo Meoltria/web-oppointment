@@ -3,7 +3,7 @@
     <el-menu :default-active="onRoutes" class="el-menu-vertical-demo" theme="light" unique-opened router>
       <template v-for="perm in permissions">
         <template v-if="perm.permissionProperty == '目录'">
-          <el-submenu :index="perm.permissionCode">
+          <el-submenu :index="perm.permissionCode" :key="perm.permissionCode">
             <template slot="title">
               <i :class="perm.permissionIcon"></i>{{perm.permissionName}}
             </template>
@@ -15,7 +15,7 @@
           </el-submenu>
         </template>
         <template v-else>
-          <el-menu-item :index="perm.permissionCode">
+          <el-menu-item :index="perm.permissionCode" :key="perm.permissionCode">
             <i :class="perm.permissionIcon"></i>{{perm.permissionName}}
           </el-menu-item>
         </template>

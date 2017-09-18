@@ -2,7 +2,7 @@ import fetch from '@/utils/fetch'
 
 export function getHospitals (params) {
   return fetch({
-    url: '/Hosptial',
+    url: '/Hospital',
     method: 'get',
     params
   })
@@ -10,14 +10,14 @@ export function getHospitals (params) {
 
 export function getHospital (id) {
   return fetch({
-    url: `/Hosptial/${id}`,
+    url: `/Hospital/${id}`,
     method: 'get'
   })
 }
 
 export function createHospital (data) {
   return fetch({
-    url: '/Hosptial',
+    url: '/Hospital',
     method: 'post',
     data
   })
@@ -25,7 +25,7 @@ export function createHospital (data) {
 
 export function updateHospital (data) {
   return fetch({
-    url: `/Hosptial/${data.id}`,
+    url: `/Hospital/${data.id}`,
     method: 'put',
     data
   })
@@ -33,7 +33,7 @@ export function updateHospital (data) {
 
 export function deleteHospital (id) {
   return fetch({
-    url: `/Hosptial/${id}`,
+    url: `/Hospital/${id}`,
     method: 'delete'
   })
 }
