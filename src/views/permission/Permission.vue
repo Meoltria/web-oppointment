@@ -3,41 +3,40 @@
     <div class="crumbs">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item><i class="el-icon-menu"></i> 系统设置</el-breadcrumb-item>
-        <el-breadcrumb-item>部门管理</el-breadcrumb-item>
+        <el-breadcrumb-item>功能管理</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="handle-box">
-      上级部门:
+      父级功能:
       <el-cascader :options="selects" :props="defaultProps" v-model="selected"  @change="handleChange" change-on-select>
       </el-cascader>
-      <el-input v-model="listQuery.name" placeholder="部门名称" class="handle-input"></el-input>
       <el-button type="primary" icon="search" @click="search">查询</el-button>
       <el-button type="primary" icon="plus" @click="handleCreate">添加</el-button>
     </div>
     <el-table :data="list" v-loading="listLoading" element-loading-text="正在加载数据..." borde fit highlight-current-row style="width:100%">
-      <el-table-column align="center" label="部门编码">
+      <el-table-column align="center" label="功能编码">
         <template scope="scope">
           <span>{{scope.row.code}}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="部门名称">
+      <el-table-column align="center" label="功能名称">
         <template scope="scope">
           <span>{{scope.row.name}}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="部门类型" width="120px">
+      <el-table-column align="center" label="功能类型" width="120px">
         <template scope="scope">
-          <span>{{scope.row.orgTypeName}}</span>
+          <span>{{scope.row.property}}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="部门电话">
+      <el-table-column align="center" label="功能描述">
         <template scope="scope">
-          <span>{{scope.row.tel}}</span>
+          <span>{{scope.row.description}}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="部门地址">
+      <el-table-column align="center" label="排序">
         <template scope="scope">
-          <span>{{scope.row.address}}</span>
+          <span>{{scope.row.order}}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="操作" width="180px">
@@ -56,39 +55,33 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form class="small-space" :model="temp" :rules="rules" ref="temp" label-position="left" label-width="120px" style='width: 450px; margin-left:50px;'>
-        <el-form-item label="部门编码" prop="code">
+        <el-form-item label="功能编码" prop="code">
           <el-input v-model="temp.code"></el-input>
         </el-form-item>
-        <el-form-item label="部门名称" prop="name">
+        <el-form-item label="功能名称" prop="name">
           <el-input v-model="temp.name"></el-input>
         </el-form-item>
-        <el-form-item label="部门类型">
-          <el-select v-model="temp.orgTypeCode">
-            <el-option v-for="item in orgTypeSelects" :key="item.code" :label="item.name" :value="item.code">
+        <el-form-item label="功能类型">
+          <el-select v-model="temp.property">
+            <el-option v-for="item in propertySelects" :key="item.code" :label="item.name" :value="item.code">
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="上级部门">
+        <el-form-item label="父级功能">
           <el-cascader :options="selects" :props="defaultProps" v-model="tempSelected"  change-on-select>
           </el-cascader>
         </el-form-item>
-        <el-form-item label="电话">
-           <el-input  v-model="temp.tel"></el-input>
+        <el-form-item label="功能图标">
+           <el-input  v-model="temp.icon"></el-input>
         </el-form-item>
-        <el-form-item label="部门地址">
-          <el-input type="textarea" v-model="temp.address"></el-input>
+        <el-form-item label="功能路径">
+          <el-input v-model="temp.path"></el-input>
         </el-form-item>
-        <el-form-item label="介绍信息">
-          <el-input type="textarea" v-model="temp.info"></el-input>
+        <el-form-item label="功能描述">
+          <el-input type="textarea" v-model="temp.description"></el-input>
         </el-form-item>
-        <el-form-item label="关键字">
-          <el-input v-model="temp.keyWord"></el-input>
-        </el-form-item>
-        <el-form-item label="部门Logo">
-          <el-input v-model="temp.logoUrl"></el-input>
-        </el-form-item>
-        <el-form-item label="部门图片">
-          <el-input v-model="temp.picUrl"></el-input>
+        <el-form-item label="功能排序">
+          <el-input v-model="temp.order"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -101,8 +94,7 @@
 </template>
 
 <script>
-import { getOrgTree, getOrgs, getOrg, createOrg, updateOrg, deleteOrg } from '@/api/orgnazition'
-import { getDictonarySelect } from '@/api/dictionary'
+import { getPermissionTree, getPermissions, getPermission, createPermission, updatePermission, deletePermission } from '@/api/permission'
 
 export default {
   data () {
@@ -112,12 +104,18 @@ export default {
       selects: null,
       selected: [1],
       tempSelected: [1],
-      orgTypeSelects: null,
       defaultProps: {
         children: 'children',
         label: 'name',
         value: 'id'
       },
+      propertySelects: [{
+        code: '目录',
+        name: '目录'
+      }, {
+        code: '菜单',
+        name: '菜单'
+      }],
       listLoading: true,
       listQuery: {
         name: undefined,
@@ -128,73 +126,61 @@ export default {
         id: undefined,
         code: '',
         name: '',
-        orgTypeCode: '',
-        orgTypeName: '',
         parent: 0,
-        tel: '',
-        address: '',
-        info: '',
-        keyWord: '',
-        logoUrl: '',
-        picUrl: '',
+        icon: '',
+        path: '',
+        property: '',
+        description: '',
+        order: 0,
         status: '正常'
       },
       rules: {
         code: [
-          {required: true, message: '请输入部门编码', trigger: 'blur'}
+          {required: true, message: '请输入功能编码', trigger: 'blur'}
         ],
         name: [
-          {required: true, message: '请输入部门名称', trigger: 'blur'}
+          {required: true, message: '请输入功能名称', trigger: 'blur'}
         ]
       },
       dialogFormVisible: false,
       dialogStatus: '',
       textMap: {
-        create: '创建部门',
-        edit: '编辑部门'
+        create: '创建功能',
+        edit: '编辑功能'
       }
     }
   },
   created () {
     this.getSelects()
-    this.getOrgTypeSelects()
     this.getList()
   },
   methods: {
     getSelects () {
-      getOrgTree(1).then(response => {
+      getPermissionTree(1).then(response => {
         this.selects = [response.data]
       })
     },
     getList () {
       this.listLoading = true
       var id = this.selected[this.selected.length - 1]
-      getOrgs(id, this.listQuery).then(response => {
+      getPermissions(id, this.listQuery).then(response => {
         this.list = response.data
         this.total = parseInt(response.headers['x-totalcount'])
         this.listLoading = false
       })
     },
-    getOrgTypeSelects () {
-      getDictonarySelect('OrgType').then(response => {
-        this.orgTypeSelects = response.data
-      })
-    },
     getTemp (id) {
-      getOrg(id).then(response => {
+      getPermission(id).then(response => {
         this.temp = {
           id: response.data.id,
           code: response.data.code,
           name: response.data.name,
-          orgTypeCode: response.data.orgTypeCode,
-          orgTypeName: response.data.orgTypeName,
           parent: response.data.parent,
-          tel: response.data.tel,
-          address: response.data.address,
-          info: response.data.info,
-          keyWord: response.data.keyWord,
-          logoUrl: response.data.logoUrl,
-          picUrl: response.data.picUrl,
+          icon: response.data.icon,
+          path: response.data.path,
+          property: response.data.property,
+          description: response.data.description,
+          order: response.data.order,
           status: response.data.status
         }
       })
@@ -202,9 +188,8 @@ export default {
     createTemp () {
       this.$refs.temp.validate(valid => {
         if (valid) {
-          this.temp.orgTypeName = this.orgTypeSelects.find(item => item.code === this.temp.orgTypeCode).name
           this.temp.parent = this.tempSelected[this.tempSelected.length - 1]
-          createOrg(this.temp).then(response => {
+          createPermission(this.temp).then(response => {
             if (response.status === 201) {
               this.dialogFormVisible = false
               this.$notify({
@@ -225,9 +210,8 @@ export default {
     updateTemp () {
       this.$refs.temp.validate(valid => {
         if (valid) {
-          this.temp.orgTypeName = this.orgTypeSelects.find(item => item.code === this.temp.orgTypeCode).name
           this.temp.parent = this.tempSelected[this.tempSelected.length - 1]
-          updateOrg(this.temp).then(response => {
+          updatePermission(this.temp).then(response => {
             if (response.status === 204) {
               this.dialogFormVisible = false
               this.$notify({
@@ -246,7 +230,7 @@ export default {
       })
     },
     deleteTemp (id) {
-      deleteOrg(id).then(response => {
+      deletePermission(id).then(response => {
         if (response.status === 204) {
           this.$notify({
             title: '成功',
@@ -268,15 +252,12 @@ export default {
         id: undefined,
         code: '',
         name: '',
-        orgTypeCode: '',
-        orgTypeName: '',
         parent: 0,
-        tel: '',
-        address: '',
-        info: '',
-        keyWord: '',
-        logoUrl: '',
-        picUrl: '',
+        icon: '',
+        path: '',
+        property: '',
+        description: '',
+        order: 0,
         status: '正常'
       }
     },
@@ -335,5 +316,5 @@ export default {
     width: 180px;
     display: inline-block;
   }
-
 </style>
+

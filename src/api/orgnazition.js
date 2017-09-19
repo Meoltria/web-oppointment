@@ -7,3 +7,40 @@ export function getOrgTree (id) {
   })
 }
 
+export function getOrgs (id, params) {
+  return fetch({
+    url: `/Orgs/${id}/Orgs`,
+    method: 'get',
+    params
+  })
+}
+
+export function getOrg (id) {
+  return fetch({
+    url: `/Orgs/${id}`,
+    method: 'get'
+  })
+}
+
+export function createOrg (data) {
+  return fetch({
+    url: '/Orgs',
+    method: 'post',
+    data
+  })
+}
+
+export function updateOrg (data) {
+  return fetch({
+    url: `/Orgs/${data.id}`,
+    method: 'put',
+    data
+  })
+}
+
+export function deleteOrg (id) {
+  return fetch({
+    url: `/Orgs/${id}`,
+    method: 'delete'
+  })
+}

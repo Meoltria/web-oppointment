@@ -55,7 +55,7 @@
           <el-input v-model="temp.name"></el-input>
         </el-form-item>
         <el-form-item label="接入方式" prop="accessTypeCode">
-          <el-select v-model="temp.accessTypeCode" v-on="temp.accessTypeName">
+          <el-select v-model="temp.accessTypeCode">
             <el-option v-for="item in selects" :key="item.code" :label="item.name" :value="item.code">
             </el-option>
           </el-select>

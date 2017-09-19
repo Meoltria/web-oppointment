@@ -24,6 +24,14 @@ export default new Router({
         {
           path: '/OrgnazitionManager',
           component: resolve => require(['../views/orgnazition/Orgnazition.vue'], resolve)
+        },
+        {
+          path: '/PowerManager',
+          component: resolve => require(['../views/permission/Permission.vue'], resolve)
+        },
+        {
+          path: '/RoleManager',
+          component: resolve => require(['../views/role/role.vue'], resolve)
         }
       ]
     },
