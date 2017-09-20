@@ -51,3 +51,18 @@ export function deletePermission (id) {
     method: 'delete'
   })
 }
+
+export function setRolePermissions (data) {
+  return fetch({
+    url: `/Roles/${data.roleId}/Permissions`,
+    method: 'put',
+    data: data.permIds
+  })
+}
+
+export function getRolePermissions (id) {
+  return fetch({
+    url: `/Roles/${id}/Permissions`,
+    method: 'get'
+  })
+}
