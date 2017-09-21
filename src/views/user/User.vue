@@ -70,7 +70,7 @@
         <el-form-item label="密   码" prop="passWord" v-if="dialogStatus=='create'">
           <el-input type="password" v-model="temp.passWord" ></el-input>
         </el-form-item>
-        <el-form-item label="用户类型">
+        <el-form-item label="用户类型" prop="userTypeCode">
           <el-select v-model="temp.userTypeCode">
             <el-option v-for="item in userTypeSelects" :key="item.code" :label="item.name" :value="item.code">
             </el-option>
@@ -80,25 +80,25 @@
           <el-cascader :options="orgSelects" :props="defaultProps" v-model="tempOrgSelected"  change-on-select>
           </el-cascader>
         </el-form-item>
-        <el-form-item label="所属角色">
-          <el-select v-model="temp.roleId">
+        <el-form-item label="所属角色" prop="roleId">
+          <el-select v-model.number="temp.roleId">
             <el-option v-for="item in roleSelects" :key="item.id" :label="item.name" :value="item.id">
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="性  别">
+        <el-form-item label="性  别" prop="genderCode">
           <el-select v-model="temp.genderCode">
             <el-option v-for="item in genderSelects" :key="item.code" :label="item.name" :value="item.code">
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="职  称">
+        <el-form-item label="职  称" prop="userRankCode">
           <el-select v-model="temp.userRankCode">
             <el-option v-for="item in userRankSelects" :key="item.code" :label="item.name" :value="item.code">
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="挂号级别">
+        <el-form-item label="挂号级别" prop="registeredRankCode">
           <el-select v-model="temp.registeredRankCode">
             <el-option v-for="item in registeredRankSelects" :key="item.code" :label="item.name" :value="item.code">
             </el-option>
@@ -186,6 +186,21 @@ export default {
         ],
         passWord: [
           {required: true, message: '请输入密码', trigger: 'blur'}
+        ],
+        roleId: [
+          {required: true, message: '请选择用户角色'}
+        ],
+        userTypeCode: [
+          {required: true, message: '请选择用户类型', trigger: 'select'}
+        ],
+        genderCode: [
+          {required: true, message: '请选择性别', trigger: 'select'}
+        ],
+        userRankCode: [
+          {required: true, message: '请选择用户职称', trigger: 'select'}
+        ],
+        registeredRankCode: [
+          {required: true, message: '请选择挂号级别', trigger: 'select'}
         ]
       },
       dialogFormVisible: false,

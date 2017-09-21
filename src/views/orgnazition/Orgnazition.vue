@@ -62,7 +62,7 @@
         <el-form-item label="部门名称" prop="name">
           <el-input v-model="temp.name"></el-input>
         </el-form-item>
-        <el-form-item label="部门类型">
+        <el-form-item label="部门类型" prop="orgTypeCode">
           <el-select v-model="temp.orgTypeCode">
             <el-option v-for="item in orgTypeSelects" :key="item.code" :label="item.name" :value="item.code">
             </el-option>
@@ -145,6 +145,9 @@ export default {
         ],
         name: [
           {required: true, message: '请输入部门名称', trigger: 'blur'}
+        ],
+        orgTypeCode: [
+          {required: true, message: '请选择部门类型', trigger: 'select'}
         ]
       },
       dialogFormVisible: false,

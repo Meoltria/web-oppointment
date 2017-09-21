@@ -61,7 +61,7 @@
         <el-form-item label="功能名称" prop="name">
           <el-input v-model="temp.name"></el-input>
         </el-form-item>
-        <el-form-item label="功能类型">
+        <el-form-item label="功能类型" prop="property">
           <el-select v-model="temp.property">
             <el-option v-for="item in propertySelects" :key="item.code" :label="item.name" :value="item.code">
             </el-option>
@@ -140,6 +140,9 @@ export default {
         ],
         name: [
           {required: true, message: '请输入功能名称', trigger: 'blur'}
+        ],
+        property: [
+          {required: true, message: '请选择功能类型', trigger: 'select'}
         ]
       },
       dialogFormVisible: false,
