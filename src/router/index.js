@@ -36,6 +36,10 @@ export default new Router({
         {
           path: '/UserManager',
           component: resolve => require(['../views/user/User.vue'], resolve)
+        },
+        {
+          path: '/DoctorScheduling',
+          component: resolve => require(['../views/scheduling/Scheduling.vue'], resolve)
         }
       ]
     },

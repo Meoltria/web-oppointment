@@ -8,6 +8,13 @@ export function getOrgUsers (orgId, params) {
   })
 }
 
+export function getOrgUsersByType (orgId, userTypeCode) {
+  return fetch({
+    url: `/Orgs/${orgId}/${userTypeCode}/Users`,
+    method: 'get'
+  })
+}
+
 export function getUser (id) {
   return fetch({
     url: `/Users/${id}`,

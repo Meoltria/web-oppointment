@@ -7,6 +7,13 @@ export function getOrgTree (id) {
   })
 }
 
+export function getOrgTreeByType (parentId, orgTypeCode) {
+  return fetch({
+    url: `/Orgs/${parentId}/${orgTypeCode}/WithTree/Orgs`,
+    method: 'get'
+  })
+}
+
 export function getOrgs (id, params) {
   return fetch({
     url: `/Orgs/${id}/Orgs`,
