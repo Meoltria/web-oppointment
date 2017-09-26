@@ -37,3 +37,19 @@ export function deleteScheduling (id) {
     method: 'delete'
   })
 }
+
+export function endTreatScheduling (data) {
+  return fetch({
+    url: `/Scheduling/WithEndTreat/${data.id}`,
+    method: 'put',
+    data
+  })
+}
+
+export function recoveryTreatScheduling (data) {
+  return fetch({
+    url: `/Scheduling/WithRecoveryTreat/${data.id}`,
+    method: 'put',
+    data
+  })
+}

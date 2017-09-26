@@ -15,6 +15,13 @@ export function getDictonary (id) {
   })
 }
 
+export function getDictonaryByTypeAndCode (typeCode, code) {
+  return fetch({
+    url: `/Dictionary/${typeCode}/${code}/Dictionary`,
+    method: 'get'
+  })
+}
+
 export function getDictonarySelect (typeCode) {
   return fetch({
     url: '/Dictionary/WithSelect',
