@@ -53,6 +53,9 @@
             <el-form-item label="最大预约数">
                <span>{{scope.row.maxCount}}</span>
             </el-form-item>
+            <el-form-item label="剩余预约数">
+               <span>{{scope.row.remainCount}}</span>
+            </el-form-item>
             <el-form-item label="总放号量">
                <span>{{scope.row.totalCount}}</span>
             </el-form-item>
@@ -108,7 +111,7 @@
           <span>{{scope.row.registeredRankName}}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="挂号费">
+      <el-table-column align="center" label="挂号费(分)">
         <template scope="scope">
           <span>{{scope.row.price}}</span>
         </template>
@@ -366,7 +369,7 @@ export default {
   },
   filters: {
     formatDate (time) {
-      if (time === '0001-01-01 00:00:00') {
+      if (time === null) {
         return ''
       } else {
         var date = new Date(time)
@@ -374,7 +377,7 @@ export default {
       }
     },
     formatDateTime (time) {
-      if (time === '0001-01-01 00:00:00') {
+      if (time === null) {
         return ''
       } else {
         var date = new Date(time)
@@ -648,7 +651,7 @@ export default {
     font-size: 0;
   }
   .table-expand label {
-    width: 90px;
+    width: 180px;
     color: #99a9bf;
   }
   .table-expand .el-form-item {
@@ -656,5 +659,4 @@ export default {
     margin-bottom: 0;
     width: 33%;
   }
-
 </style>

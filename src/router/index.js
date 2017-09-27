@@ -40,6 +40,10 @@ export default new Router({
         {
           path: '/DoctorScheduling',
           component: resolve => require(['../views/scheduling/Scheduling.vue'], resolve)
+        },
+        {
+          path: '/HospitalRegistered',
+          component: resolve => require(['../views/registered/HospitalRegistered.vue'], resolve)
         }
       ]
     },
