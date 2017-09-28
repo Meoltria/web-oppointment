@@ -44,6 +44,14 @@ export default new Router({
         {
           path: '/HospitalRegistered',
           component: resolve => require(['../views/registered/HospitalRegistered.vue'], resolve)
+        },
+        {
+          path: '/RegisteredManager',
+          component: resolve => require(['../views/registered/RegisteredManager.vue'], resolve)
+        },
+        {
+          path: '/TakeOppointment',
+          component: resolve => require(['../views/registered/TakeOppointment.vue'], resolve)
         }
       ]
     },

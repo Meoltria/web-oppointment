@@ -452,10 +452,9 @@ export default {
     },
     setTempSurgeryDate (val) {
       this.temp.surgeryDate = val
-      console.log(val)
     },
     setListQuerySurgeryDate (val) {
-      this.list.surgeryDate = val
+      this.listQuery.surgeryDate = val
     },
     setEndTreatSmsDate (val) {
       this.endTreateTemp.smsDate = val

@@ -137,10 +137,86 @@
         @current-change="handleCurrentChange" :current-page="listQuery.page" :current-page.sync="listQuery.page" :total='total'>
       </el-pagination>
     </div>
+
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+      <el-form class="small-space" :model="temp" :rules="rules" ref="temp" label-position="left" label-width="120px" style='width: 450px; margin-left:50px;'>
+        <el-form-item label="预约科室">
+          <el-input v-model="organazitionName" :disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="预约医生" >
+          <el-input v-model="userName" :disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="就诊日期" prop="doctorDate">
+          <el-input v-model="temp.doctorDate" :disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="就诊时间" prop="doctorTime">
+          <el-select v-model="temp.doctorTime">
+            <el-option v-for="item in doctorTimeSelects" :key="item.code" :label="item.name" :value="item.code">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="挂号类别" prop="registeredTypeCode">
+          <el-select v-model="temp.registeredTypeCode">
+            <el-option v-for="item in registeredTypeSelects" :key="item.code" :label="item.name" :value="item.code">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="患者姓名" prop="name">
+          <el-input v-model="temp.name"></el-input>
+        </el-form-item>
+        <el-form-item label="手机号" prop="phone">
+          <el-input v-model="temp.phone"></el-input>
+        </el-form-item>
+        <el-form-item label="身份证号" prop="iDCard">
+          <el-input v-model="temp.iDCard"></el-input>
+        </el-form-item>
+        <el-form-item label="患者性别" prop="genderCode">
+          <el-select v-model="temp.genderCode">
+            <el-option v-for="item in genderSelects" :key="item.code" :label="item.name" :value="item.code">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="患者地址" prop="address">
+          <el-input type="textarea" v-model="temp.address"></el-input>
+        </el-form-item>
+        <el-form-item label="患者生日" prop="birth">
+          <el-input v-model="temp.birth"></el-input>
+        </el-form-item>
+        <el-form-item label="患者来源" prop="fromType">
+          <el-input  v-model="temp.fromType"></el-input>
+        </el-form-item>
+        <el-form-item label="医保类型" prop="medicalInsuranceCode">
+          <el-select v-model="temp.medicalInsuranceCode">
+            <el-option v-for="item in medicalInsuranceSelects" :key="item.code" :label="item.name" :value="item.code">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="卡类型" prop="cardTypeCode">
+          <el-select v-model="temp.cardTypeCode">
+            <el-option v-for="item in cardTypeSelects" :key="item.code" :label="item.name" :value="item.code">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="患者卡号" prop="cardNo">
+          <el-input  v-model="temp.cardNo"></el-input>
+        </el-form-item>
+        <el-form-item label="患者类别" prop="medicalTypeCode">
+          <el-select v-model="temp.medicalTypeCode">
+            <el-option v-for="item in medicalTypeSelects" :key="item.code" :label="item.name" :value="item.code">
+            </el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button v-if="dialogStatus=='create'" type="primary" @click="createTemp">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+import { createRegistered } from '@/api/registered'
 import { getSchedulings } from '@/api/scheduling'
 import { getOrgTreeByType } from '@/api/orgnazition'
 import { getOrgUsersByType } from '@/api/user'
@@ -161,6 +237,18 @@ export default {
       },
       userSelects: null,
       endTreatSelects: null,
+      doctorTimeSelects: [{
+        code: '上午',
+        name: '上午'
+      }, {
+        code: '下午',
+        name: '下午'
+      }],
+      registeredTypeSelects: null,
+      genderSelects: null,
+      medicalInsuranceSelects: null,
+      cardTypeSelects: null,
+      medicalTypeSelects: null,
       listLoading: true,
       listQuery: {
         OrganazitionId: undefined,
@@ -169,6 +257,82 @@ export default {
         endTreatCode: undefined,
         page: 1,
         per_Page: 10
+      },
+      organazitionName: '',
+      userName: '',
+      temp: {
+        id: undefined,
+        schedulingId: undefined,
+        doctorDate: undefined,
+        doctorTime: '',
+        registeredDate: undefined,
+        registeredTypeCode: '',
+        registeredTypeName: '',
+        name: '',
+        phone: '',
+        iDCard: '',
+        genderCode: '',
+        genderName: '',
+        address: '',
+        birth: '',
+        fromType: '',
+        medicalInsuranceCode: '',
+        medicalInsuranceName: '',
+        cardTypeCode: '',
+        cardTypeName: '',
+        cardNo: '',
+        medicalTypeCode: '',
+        medicalTypeName: '',
+        registeredStateCode: '0',
+        registeredStateName: '待就诊',
+        status: '正常'
+      },
+      rules: {
+        schedulingId: [
+          {required: true, message: '请选择预约班次'}
+        ],
+        doctorDate: [
+          {required: true, message: '请输入就诊日期', trigger: 'blur'}
+        ],
+        doctorTime: [
+          {required: true, message: '请选择就诊时间', trigger: 'change'}
+        ],
+        registeredTypeCode: [
+          {required: true, message: '请选择挂号类别', trigger: 'change'}
+        ],
+        name: [
+          {required: true, message: '请输入患者姓名', trigger: 'blur'}
+        ],
+        phone: [
+          {required: true, message: '请输入患者手机号', trigger: 'blur'}
+        ],
+        iDCard: [
+          {required: true, message: '请输入患者身份证号', trigger: 'blur'}
+        ],
+        genderCode: [
+          {required: true, message: '请选择患者性别', trigger: 'change'}
+        ],
+        address: [
+          {required: true, message: '请输入患者地址', trigger: 'blur'}
+        ],
+        birth: [
+          {required: true, message: '请输入患者生日', trigger: 'blur'}
+        ],
+        fromType: [
+          {required: true, message: '请输入患者来源', trigger: 'blur'}
+        ],
+        medicalInsuranceCode: [
+          {required: true, message: '请选择医保类型', trigger: 'change'}
+        ],
+        cardTypeCode: [
+          {required: true, message: '请选择卡类型', trigger: 'change'}
+        ],
+        cardNo: [
+          {required: true, message: '请输入患者卡号', trigger: 'blur'}
+        ],
+        medicalTypeCode: [
+          {required: true, message: '请选择患者类别', trigger: 'change'}
+        ]
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -198,6 +362,11 @@ export default {
   created () {
     this.getOrgSelects()
     this.getEndTreatSelects()
+    this.getRegisteredTypeSelects()
+    this.getGenderSelects()
+    this.getMedicalInsuranceSelects()
+    this.getCardTypeSelects()
+    this.getMedicalTypeSelects()
     this.listLoading = false
   },
   methods: {
@@ -226,8 +395,87 @@ export default {
         this.endTreatSelects = response.data
       })
     },
+    getRegisteredTypeSelects () {
+      getDictonarySelect('RegisteredType').then(response => {
+        this.registeredTypeSelects = response.data
+      })
+    },
+    getGenderSelects () {
+      getDictonarySelect('Gender').then(response => {
+        this.genderSelects = response.data
+      })
+    },
+    getMedicalInsuranceSelects () {
+      getDictonarySelect('MedicalInsurance').then(response => {
+        this.medicalInsuranceSelects = response.data
+      })
+    },
+    getCardTypeSelects () {
+      getDictonarySelect('CardType').then(response => {
+        this.cardTypeSelects = response.data
+      })
+    },
+    getMedicalTypeSelects () {
+      getDictonarySelect('MedicalType').then(response => {
+        this.medicalTypeSelects = response.data
+      })
+    },
     setListQuerySurgeryDate (val) {
-      this.list.surgeryDate = val
+      this.listQuery.surgeryDate = val
+    },
+    resetTemp () {
+      this.temp = {
+        id: undefined,
+        schedulingId: undefined,
+        doctorDate: undefined,
+        doctorTime: '',
+        registeredDate: undefined,
+        registeredTypeCode: '',
+        registeredTypeName: '',
+        name: '',
+        phone: '',
+        iDCard: '',
+        genderCode: '',
+        genderName: '',
+        address: '',
+        birth: '',
+        fromType: '',
+        medicalInsuranceCode: '',
+        medicalInsuranceName: '',
+        cardTypeCode: '',
+        cardTypeName: '',
+        cardNo: '',
+        medicalTypeCode: '',
+        medicalTypeName: '',
+        registeredStateCode: '0',
+        registeredStateName: '待就诊',
+        status: '正常'
+      }
+    },
+    createTemp () {
+      this.$refs.temp.validate(valid => {
+        if (valid) {
+          this.temp.registeredTypeName = this.registeredTypeSelects.find(item => item.code === this.temp.registeredTypeCode).name
+          this.temp.genderName = this.genderSelects.find(item => item.code === this.temp.genderCode).name
+          this.temp.medicalInsuranceName = this.medicalInsuranceSelects.find(item => item.code === this.temp.medicalInsuranceCode).name
+          this.temp.cardTypeName = this.cardTypeSelects.find(item => item.code === this.temp.cardTypeCode).name
+          this.temp.medicalTypeName = this.medicalTypeSelects.find(item => item.code === this.temp.medicalTypeCode).name
+          createRegistered(this.temp).then(response => {
+            if (response.status === 201) {
+              this.dialogFormVisible = false
+              this.$notify({
+                title: '成功',
+                message: '预约成功',
+                type: 'success',
+                duration: 3000
+              })
+              this.getList()
+            }
+          })
+        } else {
+          return false
+        }
+      })
     },
     search () {
       this.listQuery.page = 1
@@ -244,8 +492,12 @@ export default {
       this.listQuery.page = val
       this.getList()
     },
-    handleCreate () {
+    handleCreate (row) {
       this.resetTemp()
+      this.organazitionName = row.organazitionName
+      this.userName = row.userName
+      this.temp.schedulingId = row.id
+      this.temp.doctorDate = formatDate(new Date(row.surgeryDate), 'yyyy-MM-dd')
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
     }
