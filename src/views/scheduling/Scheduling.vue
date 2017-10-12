@@ -298,6 +298,8 @@ export default {
         treatPrice: 0,
         plusPrice: 0,
         address: '',
+        isSms: 0,
+        smsDate: '',
         status: '正常'
       },
       rules: {
@@ -557,6 +559,8 @@ export default {
         treatPrice: 0,
         plusPrice: 0,
         address: '',
+        isSms: 0,
+        smsDate: '',
         status: '正常'
       }
     },
