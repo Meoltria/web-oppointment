@@ -25,7 +25,7 @@
     </div>
     <el-table :data="list" v-loading="listLoading" element-loading-text="正在加载数据..." borde fit highlight-current-row style="width:100%">
       <el-table-column type="expand">
-        <template scope="scope">
+        <template slot-scope="scope">
           <el-form label-position="left" inline class="table-expand">
             <el-form-item label="预约科室">
                <span>{{scope.row.organazitionName}}</span>
@@ -97,47 +97,47 @@
         </template>
       </el-table-column>
       <el-table-column align="center" label="患者姓名" width="120px">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span>{{scope.row.name}}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="性别" width="80px">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span>{{scope.row.genderName}}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="手机号">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span>{{scope.row.phone}}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="预约日期">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span>{{scope.row.doctorDate | formatDate }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="预约时间">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span>{{scope.row.doctorTime}}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="预约科室">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span>{{scope.row.organazitionName}}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="预约医生">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span>{{scope.row.userName}}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="挂号状态">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span>{{scope.row.registeredStateName}}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="操作" width="180px">
-        <template scope="scope">
+        <template slot-scope="scope">
           <el-button v-if="scope.row.registeredStateCode==0" type="success" icon="circle-check" size="small" @click="handleTake(scope.row)">取号</el-button>
         </template>
       </el-table-column>

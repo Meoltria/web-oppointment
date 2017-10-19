@@ -12,22 +12,22 @@
     </div>
     <el-table :data="list" v-loading="listLoading" element-loading-text="正在加载数据..." borde fit highlight-current-row style="width:100%">
       <el-table-column align="center" label="角色编码">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span>{{scope.row.code}}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="角色名称">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span>{{scope.row.name}}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="角色描述">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span>{{scope.row.description}}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="操作" width="270px">
-        <template scope="scope">
+        <template slot-scope="scope">
           <el-button type="primary" icon="edit" size="small" @click="handleEdit(scope.row)">编辑</el-button>
           <el-button type="primary" icon="setting" size="small" @click="handlePower(scope.row)">权限</el-button>
           <el-button type="danger" icon="delete" size="small" @click="handleDelete(scope.row)">删除</el-button>

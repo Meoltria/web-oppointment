@@ -13,27 +13,27 @@
     </div>
     <el-table :data="list" v-loading="listLoading" element-loading-text="正在加载数据..." borde fit highlight-current-row style="width:100%">
       <el-table-column align="center" label="医院编码" width="120px">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span>{{scope.row.code}}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="医院名称">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span>{{scope.row.name}}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="接入类型" width="120px">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span>{{scope.row.accessTypeName}}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="医院地址">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span>{{scope.row.address}}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="操作" width="180px">
-        <template scope="scope">
+        <template slot-scope="scope">
           <el-button type="primary" icon="edit" size="small" @click="handleEdit(scope.row)">编辑</el-button>
           <el-button type="danger" icon="delete" size="small" @click="handleDelete(scope.row)">删除</el-button>
         </template>

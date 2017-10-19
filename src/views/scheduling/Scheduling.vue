@@ -24,7 +24,7 @@
     </div>
     <el-table :data="list" v-loading="listLoading" element-loading-text="正在加载数据..." borde fit highlight-current-row style="width:100%">
       <el-table-column type="expand">
-        <template scope="scope">
+        <template slot-scope="scope">
           <el-form label-position="left" inline class="table-expand">
             <el-form-item label="科室">
                <span>{{scope.row.organazitionName}}</span>
@@ -87,42 +87,42 @@
         </template>
       </el-table-column>
       <el-table-column align="center" label="科室">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span>{{scope.row.organazitionName}}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="医生">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span>{{scope.row.userName}}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="出诊日期" width="120px">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span>{{scope.row.surgeryDate | formatDate }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="出诊时段">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span>{{scope.row.periodTypeName}}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="挂号级别">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span>{{scope.row.registeredRankName}}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="挂号费(分)">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span>{{scope.row.price}}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="是否停诊">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span>{{scope.row.endTreatName}}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="操作" width="180px">
-        <template scope="scope">
+        <template slot-scope="scope">
           <el-button v-if="scope.row.endTreatCode==0" type="warning" icon="circle-close" size="small" @click="handleEndTreat(scope.row)">停诊</el-button>
           <el-button v-if="scope.row.endTreatCode==1" type="success" icon="circle-check" size="small" @click="handleRecoveryTreat(scope.row)">复诊</el-button>
           <el-button type="danger" icon="delete" size="small" @click="handleDelete(scope.row)">删除</el-button>
