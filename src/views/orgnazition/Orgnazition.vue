@@ -103,6 +103,7 @@
 <script>
 import { getOrgTree, getOrgs, getOrg, createOrg, updateOrg, deleteOrg } from '@/api/orgnazition'
 import { getDictonarySelect } from '@/api/dictionary'
+import { synchronizingDept } from '@/api/oppointment'
 
 export default {
   data () {
@@ -149,6 +150,10 @@ export default {
         orgTypeCode: [
           {required: true, message: '请选择部门类型', trigger: 'select'}
         ]
+      },
+      synchronizingTemp: {
+        opcode: undefined,
+        ids: []
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -216,6 +221,11 @@ export default {
                 type: 'success',
                 duration: 3000
               })
+              if (this.temp.orgTypeCode === '01') {
+                this.synchronizingTemp.opcode = 1
+                this.synchronizingTemp.ids = [parseInt(response.data['id'])]
+                this.synchronizing()
+              }
               this.getSelects()
               this.getList()
             }
@@ -239,6 +249,11 @@ export default {
                 type: 'success',
                 duration: 3000
               })
+              if (this.temp.orgTypeCode === '01') {
+                this.synchronizingTemp.opcode = 2
+                this.synchronizingTemp.ids = [parseInt(this.temp.id)]
+                this.synchronizing()
+              }
               this.getSelects()
               this.getList()
             }
@@ -259,6 +274,16 @@ export default {
           })
           this.getSelects()
           this.getList()
+        }
+      })
+    },
+    synchronizing () {
+      synchronizingDept(this.synchronizingTemp).then(response => {
+        if (response.status === 200) {
+          this.$message({
+            type: 'info',
+            message: response.data['msg']
+          })
         }
       })
     },

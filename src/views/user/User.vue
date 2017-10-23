@@ -131,6 +131,7 @@ import { getOrgTree } from '@/api/orgnazition'
 import { getRoles } from '@/api/role'
 import { getDictonarySelect } from '@/api/dictionary'
 import { getOrgUsers, getUser, createUser, updateUser, deleteUser } from '@/api/user'
+import { synchronizingDoctor } from '@/api/oppointment'
 
 export default {
   data () {
@@ -202,6 +203,11 @@ export default {
         registeredRankCode: [
           {required: true, message: '请选择挂号级别', trigger: 'select'}
         ]
+      },
+      synchronizingTemp: {
+        opcode: undefined,
+        orgId: undefined,
+        ids: []
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -302,6 +308,12 @@ export default {
                 type: 'success',
                 duration: 3000
               })
+              if (this.temp.userTypeCode === '01') {
+                this.synchronizingTemp.opcode = 1
+                this.synchronizingTemp.orgId = this.temp.organazitionId
+                this.synchronizingTemp.ids = [parseInt(response.data['id'])]
+                this.synchronizing()
+              }
               this.getList()
             }
           })
@@ -327,6 +339,12 @@ export default {
                 type: 'success',
                 duration: 3000
               })
+              if (this.temp.userTypeCode === '01') {
+                this.synchronizingTemp.opcode = 2
+                this.synchronizingTemp.orgId = this.temp.organazitionId
+                this.synchronizingTemp.ids = [parseInt(this.temp.id)]
+                this.synchronizing()
+              }
               this.getList()
             }
           })
@@ -346,6 +364,16 @@ export default {
           })
           this.getSelects()
           this.getList()
+        }
+      })
+    },
+    synchronizing () {
+      synchronizingDoctor(this.synchronizingTemp).then(response => {
+        if (response.status === 200) {
+          this.$message({
+            type: 'info',
+            message: response.data['msg']
+          })
         }
       })
     },

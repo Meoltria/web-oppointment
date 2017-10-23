@@ -221,6 +221,7 @@ import { getSchedulings } from '@/api/scheduling'
 import { getOrgTreeByType } from '@/api/orgnazition'
 import { getOrgUsersByType } from '@/api/user'
 import { getDictonarySelect } from '@/api/dictionary'
+import { synchronizingOrder } from '@/api/oppointment'
 import { formatDate } from '@/utils/date'
 
 export default {
@@ -333,6 +334,9 @@ export default {
         medicalTypeCode: [
           {required: true, message: '请选择患者类别', trigger: 'change'}
         ]
+      },
+      synchronizingTemp: {
+        id: undefined
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -469,11 +473,23 @@ export default {
                 type: 'success',
                 duration: 3000
               })
+              this.synchronizingTemp.id = parseInt(response.data['id'])
+              this.synchronizing()
               this.getList()
             }
           })
         } else {
           return false
+        }
+      })
+    },
+    synchronizing () {
+      synchronizingOrder(this.synchronizingTemp).then(response => {
+        if (response.status === 200) {
+          this.$message({
+            type: 'info',
+            message: response.data['msg']
+          })
         }
       })
     },

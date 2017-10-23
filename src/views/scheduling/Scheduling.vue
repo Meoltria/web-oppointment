@@ -248,6 +248,7 @@ import { getSchedulings, createScheduling, deleteScheduling, endTreatScheduling,
 import { getOrgTreeByType, getOrg } from '@/api/orgnazition'
 import { getOrgUsersByType, getUser } from '@/api/user'
 import { getDictonarySelect, getDictonaryByTypeAndCode } from '@/api/dictionary'
+import { synchronizingWork, synchronizingStop } from '@/api/oppointment'
 import { formatDate } from '@/utils/date'
 
 export default {
@@ -356,6 +357,15 @@ export default {
         isSms: '0',
         smsDate: '',
         smsTime: ''
+      },
+      synchronizingTemp: {
+        opcode: undefined,
+        orgId: undefined,
+        date: '',
+        ids: []
+      },
+      synchronizingEndTemp: {
+        id: undefined
       },
       dialogFormVisible: false,
       dialogEndTreatVisible: false,
@@ -477,6 +487,12 @@ export default {
                 type: 'success',
                 duration: 3000
               })
+              var orgId = this.tempOrgSelected.length === 0 ? null : this.tempOrgSelected[this.tempOrgSelected.length - 1]
+              this.synchronizingTemp.opcode = 1
+              this.synchronizingTemp.orgId = orgId
+              this.synchronizingTemp.date = this.surgeryDate
+              this.synchronizingTemp.ids = [parseInt(response.data['id'])]
+              this.synchronizing()
               this.getList()
             }
           })
@@ -485,7 +501,7 @@ export default {
         }
       })
     },
-    deleteTemp (id) {
+    deleteTemp (id, orgId) {
       deleteScheduling(id).then(response => {
         if (response.status === 204) {
           this.$notify({
@@ -494,6 +510,11 @@ export default {
             type: 'success',
             duration: 3000
           })
+          this.synchronizingTemp.opcode = 3
+          this.synchronizingTemp.orgId = orgId
+          this.synchronizingTemp.date = this.surgeryDate
+          this.synchronizingTemp.ids = [id]
+          this.synchronizing()
           this.getList()
         }
       })
@@ -510,6 +531,8 @@ export default {
                 type: 'success',
                 duration: 3000
               })
+              this.synchronizingEndTemp.id = this.endTreateTemp.id
+              this.synchronizingEndTreat()
               this.getList()
             }
           })
@@ -528,7 +551,29 @@ export default {
             type: 'success',
             duration: 3000
           })
+          this.synchronizingEndTemp.id = this.endTreateTemp.id
+          this.synchronizingEndTreat()
           this.getList()
+        }
+      })
+    },
+    synchronizing () {
+      synchronizingWork(this.synchronizingTemp).then(response => {
+        if (response.status === 200) {
+          this.$message({
+            type: 'info',
+            message: response.data['msg']
+          })
+        }
+      })
+    },
+    synchronizingEndTreat () {
+      synchronizingStop(this.synchronizingEndTemp).then(response => {
+        if (response.status === 200) {
+          this.$message({
+            type: 'info',
+            message: response.data['msg']
+          })
         }
       })
     },
@@ -611,7 +656,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.deleteTemp(row.id)
+        this.deleteTemp(row.id, row.organazitionId)
       }).catch(() => {
         this.$message({
           type: 'info',
