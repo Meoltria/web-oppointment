@@ -11,22 +11,24 @@
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {
-    "autoprefixer": "^7.1.5",
+    "autoprefixer": "^7.1.6",
     "axios": "^0.16.2",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
-    "chalk": "^2.2.0",
-    "connect-history-api-fallback": "^1.4.0",
-    "copy-webpack-plugin": "^4.1.1",
-    "element-ui": "^1.4.7",
+    "chalk": "^2.3.0",
+    "connect-history-api-fallback": "^1.5.0",
+    "copy-webpack-plugin": "^4.2.1",
+    "element-ui": "^1.4.10",
     "eslint-plugin-promise": "^3.6.0",
     "express": "^4.16.2",
-    "vue": "^2.5.2",
-    "vue-loader": "^13.3.0",
+    "vue": "^2.5.8",
+    "vue-loader": "^13.5.0",
     "vue-router": "^2.8.1",
-    "vue-template-compiler": "^2.5.2",
+    "vue-template-compiler": "^2.5.8",
     "vuex": "^2.5.0",
-    "webpack-hot-middleware": "^2.20.0"
+    "webpack-bundle-analyzer": "^2.9.1",
+    "webpack-hot-middleware": "^2.20.0",
+    "webpack-merge": "^4.1.1"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
