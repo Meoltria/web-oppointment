@@ -1,6 +1,6 @@
 <template>
   <div class="login-wrap">
-      <div class="ms-title">预约诊疗平台</div>
+      <div class="ms-title">益康预约诊疗平台</div>
       <div class="ms-login">
         <el-form :model="loginForm" :rules="rules" ref="loginForm" label-position="left" label-width="0px">
           <el-form-item prop="userName">

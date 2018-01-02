@@ -1,6 +1,6 @@
 <template>
   <div class="header">
-    <div class="logo">预约诊疗平台</div>
+    <div class="logo">益康预约诊疗平台</div>
     <div class="user-info">
       <el-dropdown trigger="click" @command="handleCommand">
           <span class="el-dropdown-link">

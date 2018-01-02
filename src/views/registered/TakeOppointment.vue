@@ -148,6 +148,19 @@
         @current-change="handleCurrentChange" :current-page="listQuery.page" :current-page.sync="listQuery.page" :total='total'>
       </el-pagination>
     </div>
+
+    <el-dialog title="确认取号" :visible.sync="dialogFormVisible">
+      <el-form class="small-space" :model="temp" :rules="rules" ref="temp" label-position="left" label-width="120px" style='width: 450px; margin-left:50px;'>
+        <el-form-item label="就诊卡号" prop="cardNo">
+          <el-input v-model="temp.cardNo"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="takeRegistered">确 定</el-button>
+     
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -182,7 +195,17 @@ export default {
         registeredStateCode: undefined,
         page: 1,
         per_Page: 10
-      }
+      },
+      temp: {
+        id: undefined,
+        cardNo: ''
+      },
+      rules: {
+        cardNo: [
+          {required: true, message: '请输入诊疗卡号', trigger: 'blur'}
+        ]
+      },
+      dialogFormVisible: false
     }
   },
   filters: {
@@ -234,21 +257,38 @@ export default {
         this.registeredStateSelects = response.data
       })
     },
+    getTemp (row) {
+      this.temp = {
+        id: row.id,
+        cardNo: row.cardNo
+      }
+    },
     setListQueryDoctorDate (val) {
       this.listQuery.doctorDate = val
     },
-    takeRegistered (id) {
-      takeRegistered(id).then(response => {
-        if (response.status === 204) {
-          this.$notify({
-            title: '成功',
-            message: '取号成功',
-            type: 'success',
-            duration: 3000
+    takeRegistered () {
+      this.$refs.temp.validate(valid => {
+        if (valid) {
+          takeRegistered(this.temp).then(response => {
+            if (response.status === 204) {
+              this.dialogFormVisible = false
+              this.$notify({
+                title: '成功',
+                message: '取号成功',
+                type: 'success',
+                duration: 3000
+              })
+              this.getList()
+            }
           })
-          this.getList()
         }
       })
+    },
+    resetTemp () {
+      this.temp = {
+        id: undefined,
+        cardNo: ''
+      }
     },
     search () {
       this.listQuery.page = 1
@@ -266,18 +306,8 @@ export default {
       this.getList()
     },
     handleTake (row) {
-      this.$confirm('确定要取号？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'success'
-      }).then(() => {
-        this.takeRegistered(row.id)
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消取号!'
-        })
-      })
+      this.getTemp(row)
+      this.dialogFormVisible = true
     }
   }
 }

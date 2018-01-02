@@ -52,9 +52,10 @@ export function breakPromiseRegistered (id) {
   })
 }
 
-export function takeRegistered (id) {
+export function takeRegistered (data) {
   return fetch({
-    url: `/Registered/WithTake/${id}`,
-    method: 'put'
+    url: `/Registered/WithTake/${data.id}`,
+    method: 'put',
+    data
   })
 }
