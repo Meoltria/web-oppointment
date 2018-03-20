@@ -69,7 +69,7 @@
             <el-form-item label="患者生日">
                <span>{{scope.row.birth}}</span>
             </el-form-item>
-            <el-form-item label="就诊地址">
+            <el-form-item label="患者地址">
                <span>{{scope.row.address}}</span>
             </el-form-item>
             <el-form-item label="预约来源">
